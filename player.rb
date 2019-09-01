@@ -10,14 +10,23 @@ class Player
   def score 
     result = 0 
     #Aces should be counted last! 
-    hand.sort! do |a, b| 
-      b.start_with?("A") ? -1 : 1 
-    end 
-    hand.each do |card|
+    hand_sorted.each do |card|
       result += reveal_nominal(card, result)
     end 
     result
   end
+
+  def hand_sorted
+    hand.sort do |a, b| 
+      b.start_with?("A") ? -1 : 1 
+    end 
+  end
+
+  def muck
+    self.hand = [] 
+  end
+
+  private
 
   def reveal_nominal(card, score)
     if card[0] =~ /\d/

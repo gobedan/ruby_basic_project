@@ -15,11 +15,11 @@ class Deck
   end
 
   def shuffle
-    current_deck = CARDS.dup
+    self.current_deck = CARDS.dup
     @current_deck.shuffle!
   end
 
-  
+  private
 
-  attr_reader :current_deck
+  attr_accessor :current_deck
 end
