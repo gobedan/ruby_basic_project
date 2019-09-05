@@ -29,7 +29,7 @@ class Card
   end
 
   def score
-    if is_number?
+    if number?
       nominal.to_i
     elsif ace?
       11
