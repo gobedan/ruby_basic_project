@@ -1,25 +1,40 @@
+require_relative './card.rb'
+
 class Deck
-  CARDS = [ '2s', '2c', '2h', '2d', '3s', '3c', '3h', '3d', '4s', '4c', '4h', '4d',
-            '5s', '5c', '5h', '5d', '6s', '6c', '6h', '6d', '7s', '7c', '7h', '7d',
-            '8s', '8c', '8h', '8d', '9s', '9c', '9h', '9d', 'Ts', 'Tc', 'Th', 'Td',
-            'Js', 'Jc', 'Jh', 'Jd', 'Qs', 'Qc', 'Qh', 'Qd', 'Ks', 'Kc', 'Kh', 'Kd',
-            'As', 'Ac', 'Ah', 'Ad' ].freeze
-  
   def initialize
-    @current_deck = CARDS.dup
+    @current_deck = []
+    @current_deck = create_deck
     shuffle
   end
 
   def deal
-    current_deck.shift 
+    current_deck.shift
   end
 
   def shuffle
-    self.current_deck = CARDS.dup
+    create_deck
     @current_deck.shuffle!
   end
 
   private
 
   attr_accessor :current_deck
+
+  def create_deck
+    new_deck = []
+    while new_deck.size != 52
+      card = Card.new
+      new_deck.push(card) unless has_card?(card, new_deck)
+    end
+    new_deck
+  end
+
+  def has_card?(card, deck)
+    deck.each do |existing_card|
+      if existing_card.to_s == card.to_s
+        return true
+      end
+    end
+    false
+  end
 end
