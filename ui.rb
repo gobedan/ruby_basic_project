@@ -1,5 +1,11 @@
-module UI
-  attr_accessor :game
+class UI
+  attr_reader :hero, :dealer, :bet
+
+  def initialize(player1, player2, bet)
+    @dealer = player1
+    @hero = player2
+    @bet = bet 
+  end
 
   def help
     puts 'Type \'help\' to recieve command list'
@@ -66,9 +72,8 @@ module UI
       print ':>  '
       user_input = gets.chomp
       if user_input == '1'
-        deal_card(hero)
         puts 'Player draws..'
-        break
+        break 1
       end
       if user_input == '2'
         puts 'Player checks..'

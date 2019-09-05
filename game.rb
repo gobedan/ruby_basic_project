@@ -3,16 +3,14 @@ require_relative './deck.rb'
 require_relative './ui.rb'
 
 class Game
-  include UI
 
-  attr_reader :dealer, :hero, :deck, :bet, :round
+  attr_reader :dealer, :hero, :deck, :bet, :round, :ui
 
   def initialize
     @dealer = Player.new('dealer')
     @deck = Deck.new
     @bet = 10
     @round = 1
-    @hero = Player.new('Player1')
     game_start
   end
 
@@ -41,12 +39,12 @@ class Game
          dealer.score > hero.score) &&
        dealer.score < 22
 
-      casino_won
+      ui.casino_won
     elsif (dealer.score > 21 ||
             hero.score > dealer.score) &&
           hero.score < 22
 
-      hero_won
+      ui.hero_won
     else
       puts 'There is a tie! '
     end
@@ -57,7 +55,8 @@ class Game
     puts "Enter player name: \n:>"
     user_input = gets.chomp
     @hero = Player.new(user_input)
-    help if user_input == 'help'
+    @ui = UI.new(@dealer, @hero, @bet)
+    ui.help if user_input == 'help'
     return if user_input == 'exit'
 
     game_round
@@ -77,11 +76,12 @@ class Game
 
       deal_new_hand
       puts "\nRound №#{@round}"
-      print_turn
-      break if choose_action == -1
-
+      ui.print_turn
+      action = ui.choose_action
+      break if action == -1
+      deal_card(hero) if action == 1 
       dealers_turn
-      print_showdown
+      ui.print_showdown
       define_winner
       @round += 1
     end
